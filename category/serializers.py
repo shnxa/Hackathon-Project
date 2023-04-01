@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from category.models import Category
-from product.models import Product
+from product.serializers import ProductListSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -12,10 +12,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         repr = super().to_representation(instance)
-        children = instance.children.all()
-        parent = instance.parent.all()
-
-        if children:
-            repr['children'] = CategorySerializer(children, many=True).data
-
+        repr['products_count'] = instance.products.count()
+        repr['products'] = ProductListSerializer(instance=instance.products.all(), many=True).data
         return repr
+
+

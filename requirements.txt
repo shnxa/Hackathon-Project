@@ -1,9 +1,11 @@
-django
-djangorestframework
+django~=4.1.7
+djangorestframework-simplejwt
+PyJWT
+djangorestframework~=3.14.0
 python-decouple
 pillow
 celery
 drf-yasg
 psycopg2-binary
-django-filter
+django-filter~=23.1
 dj-rest-auth

@@ -13,6 +13,7 @@ class Product(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    id = models.AutoField(primary_key=True)
 
     def __str__(self):
         return f'{self.title} by {self.author}'

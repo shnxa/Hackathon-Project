@@ -4,9 +4,10 @@ from .models import Review
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.id')
+    username = serializers.ReadOnlyField(source='user.username')
+
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ('username', 'rating_score', 'body', 'created_at')
 
 

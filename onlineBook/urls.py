@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/v1/categories/', include('category.urls')),
     path('api/v1/products/', include('product.urls')),
     path('api/v1/reviews/', include('review.urls')),
+    path('api/v1/cart/', include('cart.urls')),
 ]
 
 urlpatterns += static(
