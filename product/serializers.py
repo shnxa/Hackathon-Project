@@ -4,7 +4,7 @@ from django.db.models import Avg
 
 from category.models import Category
 from product.models import Product, ProductImages
-from review.serializers import ReviewSerializer
+from review.serializers import ReviewDetailSerializer
 
 
 
@@ -34,8 +34,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         repr = super().to_representation(instance)
         repr['average rating for this product'] = instance.reviews.aggregate(Avg('rating_score'))['rating_score__avg']
         repr['reviews_count'] = instance.reviews.count()
-        repr['reviews'] = ReviewSerializer(instance=instance.reviews.all(), many=True).data
+        repr['reviews'] = ReviewDetailSerializer(instance=instance.reviews.all(), many=True).data
         user = self.context['request'].user
+
         return repr
 
 

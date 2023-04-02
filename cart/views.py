@@ -1,35 +1,35 @@
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import generics, permissions
-from rest_framework.decorators import action
-
-
+from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+from product.permissions import IsUserOrAdmin
 from . import serializers
+from .models import Cart
 
+User = get_user_model()
 
-from cart.models import Cart
-from product.serializers import ProductListSerializer
-
-# Create your views here.
-class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Cart.objects.all()
-    serializer_class = serializers.OrderSerializer
+class OrderCreateView(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = serializers.OrderCreateSerializer
 
-    @action(['DELETE'], detail=True)
-    def perform_destroy(self, request):
-        product = self.get_object()
-        Cart.objects.delete(product=product)
-        return Response('Successfully removed from your order cart!', status=200)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
+
+class OrderRemoveView(generics.DestroyAPIView):
+    queryset = Cart.objects.all()
+    permission_classes = (permissions.IsAuthenticated, IsUserOrAdmin)
+    serializer_class = serializers.OrderRemoveSerializer
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+class OrderListView(APIView):
+    permission_classes = (permissions.IsAuthenticated, IsUserOrAdmin)
     @action(['GET'], detail=True)
-    def list(self, request):
-        cart = Cart.objects.all()
-        serializer = ProductListSerializer(cart, many=True)
-        return Response(serializer.data, status=200)
-
-    @action(['PATCH'], detail=True)
-    def partial_update(self, serializer):
-        instance = self.get_object()
-        self.request.data.get('quantity', None)
-        updated_instance = serializer.save()
+    def get(self, request):
+        orders = request.user.orders.all()
+        serializer = serializers.OrderListSerializer(instance=orders, many=True, context=request.user).data
+        serializer = [x for x in serializer]
+        return Response(serializer, status=200)

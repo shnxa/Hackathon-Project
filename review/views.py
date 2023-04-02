@@ -5,15 +5,15 @@ from .models import Review
 from product.permissions import IsUserOrAdmin
 
 class ReviewCreateView(generics.CreateAPIView):
-    serializer_class = serializers.ReviewSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = serializers.ReviewCreateSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 class ReviewDetailView(generics.RetrieveAPIView):
     queryset = Review.objects.all()
-    serializer_class = serializers.ReviewSerializer
+    serializer_class = serializers.ReviewDetailSerializer
 
     def get_permissions(self):
         if self.request.method == 'DELETE':

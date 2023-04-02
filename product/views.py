@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
 
-from cart.models import Cart
+
 from product.models import Product
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -45,5 +45,5 @@ class ProductViewSet(ModelViewSet):
     #     user = request.user
     #     if request.method == 'POST':
     #         Cart.objects.create(user=user, product=product)
-    #         return Response('Successfully saved this product to your shopping cart!', status=201)
+    #         return Response('Successfully saved this product to your shopping basket!', status=201)
     #

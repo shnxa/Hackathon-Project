@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'category',
     'cart',
     'product',
-    'rating',
     'review',
 ]
 
@@ -90,7 +89,7 @@ WSGI_APPLICATION = 'onlineBook.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'books_db',
+        'NAME': 'onlinebooks_db',
         'USER': 'shahnoza',
         'PASSWORD': 1,
         'HOST': 'localhost',

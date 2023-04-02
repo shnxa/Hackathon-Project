@@ -7,6 +7,8 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
 
+
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -38,7 +40,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=30, blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-
+    password_reset_code = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(
         _("active"),
         default=False,
