@@ -20,10 +20,11 @@ class OrderCreateView(generics.CreateAPIView):
 class OrderRemoveView(generics.DestroyAPIView):
     queryset = Cart.objects.all()
     permission_classes = (permissions.IsAuthenticated, IsUserOrAdmin)
-    serializer_class = serializers.OrderRemoveSerializer
+
 
     def perform_destroy(self, instance):
         instance.delete()
+        return Response({"msg": "Successfully deleted from your cart!"}, status=200)
 
 class OrderListView(APIView):
     permission_classes = (permissions.IsAuthenticated, IsUserOrAdmin)
@@ -33,3 +34,12 @@ class OrderListView(APIView):
         serializer = serializers.OrderListSerializer(instance=orders, many=True, context=request.user).data
         serializer = [x for x in serializer]
         return Response(serializer, status=200)
+
+# class PurchaseView(APIView):
+#     permission_classes = (permissions.IsAuthenticated, IsUserOrAdmin)
+#     @action(['GET'], detail=True)
+#     def get(self, request):
+#         orders = [request.user.orders.all(), request.user.orders.all().count()]
+#         serializer = serializers.PurchaseSerializer(instance=orders, many=True, context=request.user).data
+#         serializer = [x for x in serializer]
+#         return Response(serializer, status=200)
